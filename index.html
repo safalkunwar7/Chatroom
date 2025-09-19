@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE ABYSS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: white;
+      background-image: url('image.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      font-size: 4rem;
+      margin: 100px 0 20px;
+      background: linear-gradient(to right, #d1d5e6, #4b5563, #111827);
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 25px #fff, 0 0 40px #111827;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px 0;
+      text-align: center;
+      z-index: 100;
+    }
+
+    nav a {
+      color: white;
+      font-size: 1.2rem;
+      margin: 0 20px;
+      text-decoration: none;
+    }
+    nav a:hover { color: #ffbc42; }
+
+    .gif-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .gif-container img {
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+    }
+
+    .rules-container {
+      margin: 20px auto;
+      padding: 20px;
+      width: 60%;
+      border-radius: 10px;
+      text-align: left;
+      background-color: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 10px rgba(255, 188, 66, 0.3);
+    }
+    .rules-container ul { list-style: square; padding-left: 20px; }
+
+    /* Chatroom styling */
+    .chat-container {
+      margin: 30px auto;
+      padding: 20px;
+      width: 60%;
+      background: rgba(0,0,0,0.7);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,188,66,0.3);
+    }
+    #chat-box {
+      max-height: 300px;
+      overflow-y: auto;
+      background: #222;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .chat-message {
+      padding: 5px 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+    }
+    .user { background: #333; }
+    .bot { background: #444; color: #ffbc42; }
+    .chat-input { display: flex; }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px 0 0 5px;
+    }
+    .chat-input button {
+      padding: 10px 20px;
+      border: none;
+      background: #ffbc42;
+      color: white;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #111;
+      color: white;
+      font-size: 14px;
+      text-align: center;
+      border-top: 2px solid #444;
+      text-shadow: 0 0 5px #ffbc42;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Rules</a>
+    <a href="#">Chat</a>
+    <a href="#">About Us</a>
+  </nav>
+
+  <h1>The Abyss</h1>
+  <div id="welcome-message"></div>
+  <script>
+    function getGreeting() {
+      const hour = new Date().getHours();
+      if (hour < 12) return "Good Morning, Visitor!";
+      else if (hour < 18) return "Good Afternoon, Visitor!";
+      else return "Good Evening, Visitor!";
+    }
+    document.getElementById('welcome-message').innerText = getGreeting();
+  </script>
+
+
+  <!-- Rules -->
+  <div class="rules-container">
+    <p>Welcome to the chatroom! Please follow these simple guidelines:</p>
+    <ul>
+      <li>Be respectful to all participants.</li>
+      <li>No hate speech, slurs, or offensive language.</li>
+      <li>No spamming or inappropriate content.</li>
+      <li>Keep it friendly and have fun!</li>
+    </ul>
+  </div>
+
+  <!-- Chatroom -->
+  <div class="chat-container">
+    <h2>Community Chat</h2>
+    <div id="chat-box"></div>
+    <div class="chat-input">
+      <input type="text" id="message-input" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("message-input");
+
+    let messages = JSON.parse(localStorage.getItem("messages")) || [];
+    renderMessages();
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      messages.push({ sender: "You", text });
+
+      // Enhanced bot reply logic
+      let reply = "";
+      const lower = text.toLowerCase();
+      if (lower.match(/\b(hi|hello|hey|yo|sup)\b/)) {
+        const greetings = [
+          "Hey there! What's up?",
+          "Hello! How's your day going?",
+          "Hi! Nice to see you here.",
+          "Hey! Ready to chat?",
+          "Yo! What's new?"
+        ];
+        reply = greetings[Math.floor(Math.random() * greetings.length)];
+      } else if (lower.match(/how are you|how's it going|how do you feel/)) {
+        const feelings = [
+          "I'm doing well, thanks for asking! How about you?",
+          "Feeling great! What about you?",
+          "I'm just a bot, but I'm always here to chat!",
+          "I'm good! Anything exciting happening for you?"
+        ];
+        reply = feelings[Math.floor(Math.random() * feelings.length)];
+      } else if (lower.match(/bye|goodbye|see you/)) {
+        const farewells = [
+          "Goodbye! Hope to see you again soon.",
+          "See you later! Take care.",
+          "Bye! Have a great day.",
+          "Farewell! Come back anytime."
+        ];
+        reply = farewells[Math.floor(Math.random() * farewells.length)];
+      } else if (lower.match(/(help|support|question)/)) {
+        reply = "I'm here to help! Ask me anything or just say hi.";
+      } else if (lower.match(/(joke|funny)/)) {
+        const jokes = [
+          "Why did the computer get cold? Because it left its Windows open!",
+          "Why do programmers prefer dark mode? Because light attracts bugs!",
+          "Why was the math book sad? It had too many problems.",
+          "Why did the scarecrow win an award? Because he was outstanding in his field!"
+        ];
+        reply = jokes[Math.floor(Math.random() * jokes.length)];
+      } else if (lower.match(/(name|who are you)/)) {
+        reply = "I'm your friendly chat bot! Here to keep you company.";
+      } else {
+        const randoms = [
+          "Tell me more! I'm listening.",
+          "That's interesting! What else?",
+          "I love chatting. Ask me anything!",
+          "Let's keep the conversation going!",
+          "Hmm, that's cool. Want to share more?"
+        ];
+        reply = randoms[Math.floor(Math.random() * randoms.length)];
+      }
+
+      messages.push({ sender: "Bot", text: reply });
+      localStorage.setItem("messages", JSON.stringify(messages));
+      input.value = "";
+      renderMessages();
+    }
+
+    function renderMessages() {
+      chatBox.innerHTML = "";
+      messages.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "chat-message " + (m.sender === "Bot" ? "bot" : "user");
+        div.innerText = `${m.sender}: ${m.text}`;
+        chatBox.appendChild(div);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    input.addEventListener("keypress", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    <p>This is a demo chatroom project. Built with HTML, CSS, and JavaScript.</p>
+  </footer>
+</body>
+</html>

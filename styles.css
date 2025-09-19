@@ -1,0 +1,38 @@
+/* Background Styling */
+body {
+  background-image: url('image.jpg'); /* Update path if u need */
+  background-size: cover; /*  cover entite page*/
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* this used for keeping that background image fixed*/
+  color: white; /* Default text color for now is white. we can change it */
+  font-family: Arial, sans-serif;
+}
+
+/* Center the GIF */
+.gif-container {
+  text-align: center; 
+  margin: 20px 0; 
+}
+
+.gif-container img {
+  max-width: 80%; 
+  height: auto;
+}
+
+/* Style for readable text */
+.rules-container {
+  background-color: rgba(0, 0, 0, 0.6); /* Semi transparent black */
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 800px; /* Restricts width */
+  margin: 20px auto; /* Centers the container */
+}
+
+.rules-container p, .rules-container ul {
+  color: white;
+  line-height: 1.6; 
+}
+
+.rules-container ul li {
+  margin: 5px 0;
+}
